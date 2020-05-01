@@ -1,9 +1,8 @@
 #!/bin/bash
 
-cat "Downloading Deepfake face dataset"
-cat dataset-paths.csv | while read line
+cat "Downloading Deepfake face dataset sample"
+grep sample dataset-paths.csv | while read line
 do
-    echo "Downloading $line"
     kaggle datasets download $line
 done
 
