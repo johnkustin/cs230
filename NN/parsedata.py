@@ -17,15 +17,18 @@ with open('../datasets/faces-sample/metadata.csv') as csv_file:
             line_count += 1
 counter = 0
 for folder in listdir('../datasets/faces-sample/'):
-    if counter > 20: # cap for 20 folders
-        break
+    #    if counter > 20: # cap for 20 folders
+#       break
     if folder == '.DS_Store' or folder == 'metadata.csv':
         continue
-    for filename in listdir('../datasets/faces-sample/' + folder):
-    	# load image
-    	img_data = image.imread('../datasets/faces-sample/'+ folder + '/' + filename)
-    	# store loaded image
-    	loaded_images.append(img_data)
+#    for filename in listdir('../datasets/faces-sample/' + folder):
+    filename = listdir('../datasets/faces-sample/' + folder)[0]
+    # load image
+    img_data = image.imread('../datasets/faces-sample/'+ folder + '/' + filename)
+    # store loaded image
+    loaded_images.append(img_data)
+
+
     print("Currently processing: " + folder)
     y+= [load_tags[counter]] * (len(loaded_images) - len(y))
     counter += 1

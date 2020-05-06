@@ -32,7 +32,7 @@ num_px = train_x.shape[0] #include *3 for RGB
 layers_dims = [num_px, 20, 7, 5, 1] #  4-layer model
 # GRADED FUNCTION: L_layer_model
 
-def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 100, print_cost=True):#lr was 0.009
+def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=True):#lr was 0.009
     """
     Implements a L-layer neural network: [LINEAR->RELU]*(L-1)->LINEAR->SIGMOID.
     
@@ -57,7 +57,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 10
     
     # Loop (gradient descent)
     for i in range(0, num_iterations):
-
+        
         # Forward propagation: [LINEAR -> RELU]*(L-1) -> LINEAR -> SIGMOID.
         ### START CODE HERE ### (≈ 1 line of code)
         AL, caches = L_model_forward(X, parameters)
@@ -67,23 +67,22 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 10
         ### START CODE HERE ### (≈ 1 line of code)
         cost = compute_cost(AL,Y)
         ### END CODE HERE ###
-    
+         
         # Backward propagation.
         ### START CODE HERE ### (≈ 1 line of code)
         grads = L_model_backward(AL,Y,caches)
         ### END CODE HERE ###
- 
+        
         # Update parameters.
         ### START CODE HERE ### (≈ 1 line of code)
         parameters = update_parameters(parameters, grads, learning_rate)
         ### END CODE HERE ###
                 
         # Print the cost every 100 training example
-        if print_cost and i % 100 == 0:
+        if print_cost:
             print ("Cost after iteration %i: %f" %(i, cost))
-        if print_cost and i % 100 == 0:
-            costs.append(cost)
-            
+        costs.append(cost)
+        print("Finished iteration ", i) 
     # plot the cost
    # plt.plot(np.squeeze(costs))
    # plt.ylabel('cost')
@@ -91,6 +90,8 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 10
    # plt.title("Learning rate =" + str(learning_rate))
    # plt.show()
     
+    np.save('parameters',parameters)
+    np.save('costs',costs)
     return parameters
 
 
@@ -103,7 +104,6 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 10
 parameters = L_layer_model(train_x, train_y.T, layers_dims, num_iterations = 2500, print_cost = True)
 
 pred_train = predict(train_x, train_y, parameters)
-
 # pred_test = predict(test_x, test_y, parameters)
 
 # print_mislabeled_images(classes, test_x, test_y, pred_test)
