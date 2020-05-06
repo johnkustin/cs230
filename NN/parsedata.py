@@ -36,7 +36,9 @@ Y_train = np.asarray(y)
 loaded_images= np.asarray(loaded_images)
 X_train_flatten = loaded_images.reshape(loaded_images.shape[0], -1).T
 X_train = X_train_flatten/255.
-Y_train = Y_train.reshape(Y_train.shape[0], 1)
+#Y_train = Y_train.reshape(Y_train.shape[0], 1)
+# use this reshape when using the tensorflow model
+Y_train = Y_train.reshape(1, Y_train.shape[0])
 print ("X_train shape: " + str(X_train.shape))
 print ("Y_train shape: " + str(Y_train.shape))
 np.save('x_train', X_train)
