@@ -102,8 +102,9 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
 # In[17]:
 
 parameters = L_layer_model(train_x, train_y.T, layers_dims, num_iterations = 2500, print_cost = True)
-
-pred_train = predict(train_x, train_y, parameters)
+parameters = np.asarray(params)
+parameters = parameters[()] # weird array bullshit
+pred_train = predict(train_x, train_y.squeeze(), parameters)
 # pred_test = predict(test_x, test_y, parameters)
 
 # print_mislabeled_images(classes, test_x, test_y, pred_test)
