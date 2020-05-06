@@ -6,7 +6,7 @@ import csv
 loaded_images = list()
 y = list()
 load_tags = list()
-with open('../Datasets/images/metadata.csv') as csv_file:
+with open('../datasets/faces-sample/metadata.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -16,14 +16,19 @@ with open('../Datasets/images/metadata.csv') as csv_file:
             load_tags.append(row[1])
             line_count += 1
 counter = 0
-for folder in listdir('../Datasets/images/'):
+for folder in listdir('../datasets/faces-sample/'):
+    #    if counter > 20: # cap for 20 folders
+#       break
     if folder == '.DS_Store' or folder == 'metadata.csv':
         continue
-    for filename in listdir('../Datasets/images/' + folder):
-    	# load image
-    	img_data = image.imread('../Datasets/images/'+ folder + '/' + filename)
-    	# store loaded image
-    	loaded_images.append(img_data)
+#    for filename in listdir('../datasets/faces-sample/' + folder):
+    filename = listdir('../datasets/faces-sample/' + folder)[0]
+    # load image
+    img_data = image.imread('../datasets/faces-sample/'+ folder + '/' + filename)
+    # store loaded image
+    loaded_images.append(img_data)
+
+
     print("Currently processing: " + folder)
     y+= [load_tags[counter]] * (len(loaded_images) - len(y))
     counter += 1
