@@ -1,3 +1,6 @@
+import math
+import numpy as np
+import tensorflow as tf
 def create_placeholders(n_x, n_y):
     """
     Creates the placeholders for the tensorflow session.

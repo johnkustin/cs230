@@ -1,17 +1,18 @@
 import math
 import numpy as np
-import h5py
+#import h5py
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.python.framework import ops
-from tf_utils import load_dataset, random_mini_batches, predict
+from tf_utils import *
+from tf_helper_funcs import *
 
 np.random.seed(1)
 
 X_full = np.load("x_train.npy")
 Y_full = np.load("y_train.npy")
-
-def model(X_train = X_full[:,0:7701], Y_train = Y_full[:,0:7701], X_test = X_full[:,7701:], Y_test = Y_full[:,7701:], learning_rate = 0.0001,
+Y_full = (Y_full == 'REAL')
+def model(X_train = X_full, Y_train = Y_full, X_test = X_full, Y_test = Y_full, learning_rate = 0.0001,
           num_epochs = 1500, minibatch_size = 32, print_cost = True):
     """
     Implements a three-layer tensorflow neural network: LINEAR->RELU->LINEAR->RELU->LINEAR->SOFTMAX.
@@ -88,11 +89,11 @@ def model(X_train = X_full[:,0:7701], Y_train = Y_full[:,0:7701], X_test = X_ful
                 costs.append(epoch_cost)
                 
         # plot the cost
-        plt.plot(np.squeeze(costs))
-        plt.ylabel('cost')
-        plt.xlabel('iterations (per fives)')
-        plt.title("Learning rate =" + str(learning_rate))
-        plt.show()
+       # plt.plot(np.squeeze(costs))
+       # plt.ylabel('cost')
+       # plt.xlabel('iterations (per fives)')
+       # plt.title("Learning rate =" + str(learning_rate))
+       # plt.show()
 
         # lets save the parameters in a variable
         parameters = sess.run(parameters)
@@ -105,6 +106,7 @@ def model(X_train = X_full[:,0:7701], Y_train = Y_full[:,0:7701], X_test = X_ful
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
         print ("Train Accuracy:", accuracy.eval({X: X_train, Y: Y_train}))
-        print ("Test Accuracy:", accuracy.eval({X: X_test, Y: Y_test}))
+#        print ("Test Accuracy:", accuracy.eval({X: X_test, Y: Y_test}))
         
         return parameters
+parameters = model(X_full, Y_full.T)
