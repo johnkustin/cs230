@@ -5,20 +5,20 @@ import csv
 
 loaded_images = list()
 y = list()
-load_tags = list()
-with open('../datasets/faces-sample/metadata.csv') as csv_file:
+load_tags = {}
+with open('../Datasets/images/metadata.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
         if line_count == 0:
             line_count += 1
         else:
-            load_tags.append(row[1])
+            load_tags.update({row[0]: row[1]})
             line_count += 1
 counter = 0
-for folder in listdir('../datasets/faces-sample/'):
-    #    if counter > 20: # cap for 20 folders
-#       break
+for folder in listdir('../Datasets/images/'):
+    if counter > 15:
+        break
     if folder == '.DS_Store' or folder == 'metadata.csv':
         continue
 #    for filename in listdir('../datasets/faces-sample/' + folder):
@@ -30,16 +30,20 @@ for folder in listdir('../datasets/faces-sample/'):
 
 
     print("Currently processing: " + folder)
-    y+= [load_tags[counter]] * (len(loaded_images) - len(y))
+    if (load_tags[folder + '.mp4'] == 'REAL'):
+        l = [[1, 0]] * (len(loaded_images) - len(y))
+        y.extend(l)
+    else:
+        l = [[0, 1]] * (len(loaded_images) - len(y))
+        y.extend(l)
+    # y+= [load_tags[folder + '.mp4']] * (len(loaded_images) - len(y))
     counter += 1
 Y_train = np.asarray(y)
 loaded_images= np.asarray(loaded_images)
-X_train_flatten = loaded_images.reshape(loaded_images.shape[0], -1).T
-X_train = X_train_flatten/255.
-#Y_train = Y_train.reshape(Y_train.shape[0], 1)
-# use this reshape when using the tensorflow model
-Y_train = Y_train.reshape(1, Y_train.shape[0])
+print(loaded_images.shape)
+X_train = loaded_images/255.
+Y_train = Y_train
 print ("X_train shape: " + str(X_train.shape))
 print ("Y_train shape: " + str(Y_train.shape))
-np.save('x_train', X_train)
-np.save('y_train', Y_train)
+np.save('x_train_small', X_train)
+np.save('y_train_small', Y_train)
