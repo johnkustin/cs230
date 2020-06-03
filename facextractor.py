@@ -21,9 +21,9 @@ print(f'Running on device: {device}')
 # so use the kaggle api to download and unzip test videos to a directory
 # cs230/deepfake-detection-challenge/test_videos/
 
-TRAIN_DIR = '~/cs230/deepfake-detection-challenge/test_videos/'
+TRAIN_DIR = '/home/ubuntu/cs230/deepfake-detection-challenge/test_videos/'
 #TMP_DIR = '/kaggle/tmp/'
-TMP_DIR = '~/cs230/tmp/'
+TMP_DIR = '/home/ubuntu/cs230/tmp/'
 ZIP_NAME = 'dfdc_test_faces.zip'
 #METADATA_PATH = TRAIN_DIR + 'metadata.json'
 # metadatah path is TRAIN_DIR + 'sample_submission.csv'
