@@ -1,4 +1,5 @@
 import os
+import shutil
 import glob
 import json
 import torch
@@ -12,18 +13,22 @@ from facenet_pytorch import MTCNN
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 print(f'Running on device: {device}')
 
+# kaggle competitions download deepfake-detection-challenge -f test_videos.zip
+# kaggle competitions download deepfake-detection-challenge -f sample_submission.csv
+
 #TRAIN_DIR = '/kaggle/input/deepfake-detection-challenge/train_sample_videos/'
 # test videos directory is deepfake-detection-challenge/test_videos/
 # so use the kaggle api to download and unzip test videos to a directory
 # cs230/deepfake-detection-challenge/test_videos/
 
 TRAIN_DIR = '~/cs230/deepfake-detection-challenge/test_videos/'
-TMP_DIR = '/kaggle/tmp/'
-ZIP_NAME = 'dfdc_trest_faces.zip'
+#TMP_DIR = '/kaggle/tmp/'
+TMP_DIR = '~/cs230/tmp/'
+ZIP_NAME = 'dfdc_test_faces.zip'
 #METADATA_PATH = TRAIN_DIR + 'metadata.json'
 # metadatah path is TRAIN_DIR + 'sample_submission.csv'
 
-METADATA_PATH = TRAIN_DIR + 'sample_submission'
+METADATA_PATH = TRAIN_DIR + 'sample_submission.csv'
 
 SCALE = 0.25
 N_FRAMES = None
@@ -88,10 +93,12 @@ with open(METADATA_PATH, 'r') as f:
 
 train_df = pd.DataFrame(
     [
-        (video_file, metadata[video_file]['label'], metadata[video_file]['split'], metadata[video_file]['original'] if 'original' in metadata[video_file].keys() else '')
+        #(video_file, metadata[video_file]['label'], metadata[video_file]['split'], metadata[video_file]['original'] if 'original' in metadata[video_file].keys() else '')
+        (video_file, metadata[video_file]['label'])
         for video_file in metadata.keys()
     ],
-    columns=['filename', 'label', 'split', 'original']
+    #columns=['filename', 'label', 'split', 'original']
+    columns=['filename', 'label']
 )
 
 train_df.head()    
@@ -118,3 +125,6 @@ with torch.no_grad():
 
 os.chdir(TMP_DIR)
 train_df.to_csv('metadata.csv', index=False)
+
+#!zip -r -m -q /kaggle/working/$ZIP_NAME *
+shutil.make_archive(ZIP_NAME, 'zip', '*')
