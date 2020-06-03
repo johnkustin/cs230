@@ -28,7 +28,7 @@ ZIP_NAME = 'dfdc_test_faces.zip'
 #METADATA_PATH = TRAIN_DIR + 'metadata.json'
 # metadatah path is TRAIN_DIR + 'sample_submission.csv'
 
-METADATA_PATH = TRAIN_DIR + 'sample_submission.csv'
+#METADATA_PATH = TRAIN_DIR + 'sample_submission.csv'
 
 SCALE = 0.25
 N_FRAMES = None
@@ -88,9 +88,9 @@ class FaceExtractor:
 
         v_cap.release()
 
-with open(METADATA_PATH, 'r') as f:
-    metadata = json.load(f)
-
+#with open(METADATA_PATH, 'r') as f:
+#    metadata = json.load(f)
+"""
 train_df = pd.DataFrame(
     [
         #(video_file, metadata[video_file]['label'], metadata[video_file]['split'], metadata[video_file]['original'] if 'original' in metadata[video_file].keys() else '')
@@ -100,8 +100,8 @@ train_df = pd.DataFrame(
     #columns=['filename', 'label', 'split', 'original']
     columns=['filename', 'label']
 )
-
-train_df.head()    
+"""
+#train_df.head()    
 
 # Load face detector
 face_detector = MTCNN(margin=14, keep_all=True, factor=0.5, device=device).eval()
@@ -124,7 +124,7 @@ with torch.no_grad():
         face_extractor(path, save_dir)
 
 os.chdir(TMP_DIR)
-train_df.to_csv('metadata.csv', index=False)
+#train_df.to_csv('metadata.csv', index=False)
 
 #!zip -r -m -q /kaggle/working/$ZIP_NAME *
 shutil.make_archive(ZIP_NAME, 'zip', '*')
