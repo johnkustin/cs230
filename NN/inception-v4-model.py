@@ -19,11 +19,28 @@ print(args)
 
 model = utils.choose_nets(args.nets)
 
-cifar100 = tf.keras.datasets.cifar10
+# add train and test here
+(x_train, y_train) = None
+(x_test, y_test) = None
+# flattens train data
+x_train = x_train.reshape(x_train.shape[0], -1)
+x_test = x_test.reshape(x_test.shape[0], -1)
 
-(x_train, y_train), (x_test, y_test) = cifar100.load_data()
-x_train, x_test = x_train / 255.0, x_test / 255.0
+newY = []
+for data in y_train:
+    if data[0] == 1: #real
+        newY.append(1)
+    else: #fake
+        newY.append(0)
+y_train = newY
 
+newYT = []
+for data in y_test:
+    if data[0] == 1: #real
+        newYT.append(1)
+    else: #fake
+        newYT.append(0)
+y_test = newYT
 
 train_ds = tf.data.Dataset.from_tensor_slices(
     (x_train, y_train)).shuffle(10000).batch(args.batch_size)
