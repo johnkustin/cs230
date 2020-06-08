@@ -39,9 +39,9 @@ def initialize_parameters():
     
     tf.set_random_seed(1)                  
         
-    W1 = tf.get_variable("W1", [25,76800], initializer = tf.contrib.layers.xavier_initializer(seed = 1))
-    b1 = tf.get_variable("b1", [25,1], initializer = tf.zeros_initializer())
-    W2 = tf.get_variable("W2", [12, 25], initializer = tf.contrib.layers.xavier_initializer(seed = 1))
+    W1 = tf.get_variable("W1", [2249,196608], initializer = tf.contrib.layers.xavier_initializer(seed = 1))
+    b1 = tf.get_variable("b1", [2249,1], initializer = tf.zeros_initializer())
+    W2 = tf.get_variable("W2", [12, 2249], initializer = tf.contrib.layers.xavier_initializer(seed = 1))
     b2 = tf.get_variable("b2", [12, 1], initializer = tf.zeros_initializer())
     W3 = tf.get_variable("W3", [1, 12], initializer = tf.contrib.layers.xavier_initializer(seed = 1))
     b3 = tf.get_variable("b3", [1, 1], initializer = tf.zeros_initializer())

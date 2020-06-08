@@ -1,3 +1,4 @@
+import os
 import math
 import numpy as np
 import h5py
@@ -51,14 +52,20 @@ def initialize_parameters():
     """
 
     tf.set_random_seed(1)                              # so that your "random" numbers match ours
-
+    # n_H0, n_W0, n_C0
+#    power2 = np.log2(256)
+    #dimensions = [8,8,1,1]
     ### START CODE HERE ### (approx. 2 lines of code)
     W1 = tf.get_variable("W1", [4,4,3,8], initializer = tf.contrib.layers.xavier_initializer(seed = 0))
+#    W2 = tf.get_variable("W2", [4,4,3,8], initializer = tf.contrib.layers.xavier_initializer(seed = 0))
+#    W2 = tf.get_variable("W2", [3,3,8,16], initializer = tf.contrib.layers.xavier_initializer(seed = 0))
     W2 = tf.get_variable("W2", [2,2,8,16], initializer = tf.contrib.layers.xavier_initializer(seed = 0))
+#    W3 = tf.get_variable("W3", [2,2,8,96], initializer = tf.contrib.layers.xavier_initializer(seed = 0))
     ### END CODE HERE ###
 
     parameters = {"W1": W1,
                   "W2": W2}
+#                  "W3": W3}
 
     return parameters
     # GRADED FUNCTION: forward_propagation
@@ -84,8 +91,15 @@ def forward_propagation(X, parameters):
     # Retrieve the parameters from the dictionary "parameters"
     W1 = parameters['W1']
     W2 = parameters['W2']
+#    W3 = parameters['W3']
 
     ### START CODE HERE ###
+    # CONV2D: stride of 1, padding 'SAME'
+#    Z1 = tf.nn.conv2d(X,W1, strides = [1,1,1,1], padding = 'SAME')
+    # RELU
+#    A1 = tf.nn.relu(Z1)
+    # MAXPOOL: window 8x8, stride 8, padding 'SAME'
+#    P1 = tf.nn.max_pool(A1, ksize = [1,8,8,1], strides = [1,8,8,1], padding = 'SAME')
     # CONV2D: stride of 1, padding 'SAME'
     Z1 = tf.nn.conv2d(X,W1, strides = [1,1,1,1], padding = 'SAME')
     # RELU
@@ -102,10 +116,10 @@ def forward_propagation(X, parameters):
     F = tf.contrib.layers.flatten(P2)
     # FULLY-CONNECTED without non-linear activation function (not not call softmax).
     # 6 neurons in output layer. Hint: one of the arguments should be "activation_fn=None"
-    Z3 = tf.contrib.layers.fully_connected(F, 2, activation_fn=None)
+    Z4 = tf.contrib.layers.fully_connected(F, 2, activation_fn=None)
     ### END CODE HERE ###
 
-    return Z3
+    return Z4
 # GRADED FUNCTION: compute_cost
 
 def compute_cost(Z3, Y):
@@ -226,9 +240,10 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.009,
         plt.plot(np.squeeze(costs))
         plt.ylabel('cost')
         plt.xlabel('iterations (per tens)')
-        plt.title("Learning rate =" + str(learning_rate))
+        plt.title("Learning rate =" + str(learning_rate) + ' Minibatch size = '+ str(minibatch_size) + 'Num epochs = ' + str(num_epochs))
         plt.show(block=True)
-
+        plt.savefig('cnn-cost.png')
+        
         # Calculate the correct predictions
         predict_op = tf.argmax(Z3, 1)
         correct_prediction = tf.equal(predict_op, tf.argmax(Y, 1))
@@ -240,18 +255,37 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.009,
         test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
         print("Train Accuracy:", train_accuracy)
         print("Test Accuracy:", test_accuracy)
-
+        f = open("cnn-train-acc.txt","a")
+        f.write(str(train_accuracy))
+        f.close()
+        f = open("cnn-test-acc.txt","a")
+        f.write(str(test_accuracy))
+        f.close()
         return train_accuracy, test_accuracy, parameters
 
-X = np.load('x_train_small.npy')
-Y = np.load('y_train_small.npy')
+#X = np.load('x_train_small.npy')
+#Y = np.load('y_train_small.npy')
+Xarr = np.load('/data/testdata/x_test.npz')
+X = Xarr['arr_0']
+Yarr = np.load('/data/testdata/y_test.npz')
+Y = Yarr['arr_0']
+Xarr.close()
+Yarr.close()
 # c = np.c_[X.reshape(len(X), -1), Y.reshape(len(Y), -1)]
 # np.random.shuffle(c)
 X, Y = shuffle(X, Y)
 # X = c[:, :X.size//len(X)].reshape(X.shape)
 # Y = c[:, X.size//len(X):].reshape(Y.shape)
-X_train = X[:3000,:]
-Y_train = Y[:3000,:]
-X_test = X[3100:4500,:]
-Y_test = Y[3100:4500, :]
-_, _, parameters = model(X_train, Y_train, X_test, Y_test)
+#X_train = X[:3000,:]
+#Y_train = Y[:3000,:]
+#X_test = X[3100:4500,:]
+#Y_test = Y[3100:4500, :]
+# using dataset of 20k images caused instance to run out of memory
+# trying 10k images
+
+X_train = X[251:2500,:]
+Y_train = Y[251:2500,:]
+X_test = X[:250,:]
+Y_test = Y[:250,:]
+train_accuracy, test_accuracy, parameters = model(X_train, Y_train, X_test, Y_test, minibatch_size=32, num_epochs = 512)
+

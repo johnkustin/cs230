@@ -64,6 +64,7 @@ partition = len(loaded_images)//4
 X_train = loaded_images
 print('saving quarters of train set')
 np.savez_compressed('x_train1', X_train[:partition])
+exit()
 np.savez_compressed('y_train1', Y_train[:partition])
 np.savez_compressed('x_train2', X_train[partition + 1:partition*2])
 np.savez_compressed('y_train2', Y_train[partition + 1 : partition*2])
