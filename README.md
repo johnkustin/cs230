@@ -1,6 +1,6 @@
 ## CS230: Deep Learning
 # Deep Fake Detection
-repo by: John Kustin, Isaac Schaider, Andy Wang
+repo by: Isaac Schaider, John Kustin, Andy Wang
 
 ### Downloading the sample dataset
 Use the [Kaggle API](https://github.com/Kaggle/kaggle-api) to download your data. We did this with respect to the Deepfake Detection Challenge.
