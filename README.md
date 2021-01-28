@@ -1,6 +1,6 @@
-# cs230
+# CS230: Deep Learning
 deepest of learns </br>
-John Kustin, Isaac Schaider, Andy Wang
+repo by: John Kustin, Isaac Schaider, Andy Wang
 
 ### downloading the sample dataset
 Use the [Kaggle API](https://github.com/Kaggle/kaggle-api) to download your data. We did this with respect to the Deepfake Detection Challenge.
