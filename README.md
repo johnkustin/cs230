@@ -1,6 +1,5 @@
 ## CS230: Deep Learning
 # Deep Fake Detection
-deepest of learns </br>
 repo by: John Kustin, Isaac Schaider, Andy Wang
 
 ### Downloading the sample dataset
